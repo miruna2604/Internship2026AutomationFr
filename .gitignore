@@ -1,0 +1,24 @@
+
+# Maven - generated build files
+target/
+
+# Java compiled files
+*.class
+*.jar
+*.war
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment files and secrets
+.env
+.env.*
