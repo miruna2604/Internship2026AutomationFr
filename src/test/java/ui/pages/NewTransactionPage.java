@@ -14,15 +14,9 @@ public class NewTransactionPage {
     public void init(Page page) {
         this.page = page;
         userListItems = page.locator("[data-test^='user-list-item-']");
-        amountInput = page.locator(
-                "[data-test='transaction-create-amount-input'] input"
-        );
-        noteInput = page.locator(
-                "[data-test='transaction-create-description-input'] input"
-        );
-        payButton = page.locator(
-                "[data-test='transaction-create-submit-payment']"
-        );
+        amountInput = page.locator("#amount");
+        noteInput = page.locator("#transaction-create-description-input");
+        payButton = page.locator("[data-test='transaction-create-submit-payment']");
     }
 
     public void selectUser(String recipient) {
@@ -36,6 +30,6 @@ public class NewTransactionPage {
         amountInput.fill(amount);
         noteInput.fill(note);
         payButton.click();
-        page.locator("[data-test='alert-bar-success']").waitFor();
+        page.getByText("Complete", new Page.GetByTextOptions().setExact(true)).waitFor();
     }
 }
