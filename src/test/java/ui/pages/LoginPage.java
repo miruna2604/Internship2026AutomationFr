@@ -14,6 +14,8 @@ public class LoginPage {
     private Locator usernameInput;
     private Locator passwordInput;
     private Locator signButton;  // = login button
+    private Locator errorMessage; // = error message in case of invalid login
+    private Locator transactionList; // = transaction list after successful login
 
     // Initialization
     public void init(Page page) {
@@ -22,6 +24,8 @@ public class LoginPage {
         usernameInput = page.locator("#username");
         passwordInput = page.getByLabel("Password");
         signButton = page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Sign In"));
+        errorMessage = page.locator("[data-test='signin-error']");
+        transactionList = page.locator(homePageTransactionList);
     }
 
     public void openLoginPage(String baseUrl) {
@@ -50,5 +54,21 @@ public class LoginPage {
         homePage.init(page);
 
         return homePage;
+    }
+
+    public void waitForErrorMessage() {
+        errorMessage.waitFor();
+    }
+
+    public boolean isErrorMessageVisible() {
+        return errorMessage.isVisible();
+    }
+
+    public String getErrorMessageText() {
+        return errorMessage.innerText();
+    }
+
+    public boolean isHomePageVisible() {
+        return transactionList.isVisible();
     }
 }

@@ -71,4 +71,35 @@ class HomePageTest extends BaseTest {
                 assertEquals(note, details.getDescription());
                 assertEquals("-$" + amount + ".00", details.getAmount());
         }
+
+        @Test
+        void userCanCommentOnTransactionInMine() {
+                LoginPage loginPage = new LoginPage();
+                loginPage.init(page);
+                loginPage.openLoginPage(ConfigManager.get("base.url"));
+
+                HomePage homePage = loginPage.login(
+                                ConfigManager.get("login.username"),
+                                ConfigManager.get("login.password"));
+
+                String recipient = "Darrel Ortiz";
+                String amount = "25";
+                String note = "E2E comment transaction " + System.currentTimeMillis();
+
+                NewTransactionPage newTransactionPage = homePage.clickNew();
+                newTransactionPage.selectUser(recipient);
+                newTransactionPage.pay(amount, note);
+
+                homePage.navigateToHome();
+                homePage.selectMineTab();
+
+                TransactionDetailPage details = homePage.openTransaction(note);
+                assertTrue(details.isTransactionDetailVisible(),
+                                "Transaction details should be visible before adding a comment");
+
+                String comment = "E2E comment " + System.currentTimeMillis();
+                details.addComment(comment);
+                assertTrue(details.hasComment(comment),
+                                "The new comment should appear in the transaction comments");
+        }
 }

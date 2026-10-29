@@ -11,6 +11,8 @@ public class TransactionDetailPage {
     private Locator recipient;
     private Locator description;
     private Locator amount;
+    private Locator commentInput;
+    private Locator commentItems;
 
     public void init(Page page) {
         detailHeader = page.locator(
@@ -27,6 +29,12 @@ public class TransactionDetailPage {
         );
         description = page.locator("[data-test='transaction-description']");
         amount = page.locator("[data-test^='transaction-amount-']");
+        commentInput = page.locator(
+                "[data-test^='transaction-comment-input-']"
+        );
+        commentItems = page.locator(
+                "[data-test^='comment-list-item-']"
+        );
     }
 
     public boolean isTransactionDetailVisible() {
@@ -47,5 +55,19 @@ public class TransactionDetailPage {
 
     public String getAmount() {
         return amount.innerText();
+    }
+
+    public void addComment(String comment) {
+        commentInput.fill(comment);
+        commentInput.press("Enter");
+        commentItems
+                .filter(new Locator.FilterOptions().setHasText(comment))
+                .waitFor();
+    }
+
+    public boolean hasComment(String comment) {
+        return commentItems
+                .filter(new Locator.FilterOptions().setHasText(comment))
+                .isVisible();
     }
 }
